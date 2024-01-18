@@ -1,0 +1,565 @@
+# XNAT Pipeline 1.0
+
+Overview
+
+The XNAT Pipeline 1.0 is a versatile toolkit for automating data processing and analysis workflows on neuroimaging data stored on an XNAT server. It provides a set of Python scripts and utilities to streamline the execution of data pipelines, making it easier for researchers and data analysts to work with their neuroimaging data efficiently.
+
+Features
+
+- Automate data processing and analysis workflows.
+- Execute specific pipelines for preprocessing, analysis, and more.
+- Seamless integration with XNAT servers.
+- Configuration options for input data, output paths, and processing settings.
+- Designed for researchers working with neuroimaging data.
+
+Prerequisites
+
+Before using the XNAT Pipeline 1.0, ensure that you have the following prerequisites installed:
+
+- Python 3.x
+- Required Python packages listed in the script files
+- XNAT account credentials with appropriate permissions
+
+Usage
+
+    Clone this repository to your local machine using Git:
+        git clone https://github.com/zhouemily/XNAT_pipeline_1.0.git
+        pip install -r requirements.txt (to install required python modules)
+
+##############################################################################
+Install python and set prefered python environment:
+
+"pyenv" is a popular tool for managing Python versions on your system. It allows you to install and switch between different Python versions with ease. Here are the basic steps to use "pyenv":
+    Manual Installation:
+    You can follow the instructions on the GitHub repository: 
+        https://github.com/pyenv/pyenv
+
+    Add pyenv to Your Shell:
+    To enable pyenv, you need to add it to your shell configuration file 
+    (e.g., .bashrc, .zshrc, or .profile). Add the following line at the 
+    end of the appropriate file:
+        eval "$(pyenv init -)"
+
+    For example, if you're using Bash, add it to your ~/.bashrc 
+    or ~/.bash_profile file.
+  
+    After adding the above line to your shell configuration file, 
+    restart your shell or run the following command to apply the changes:
+        exec "$SHELL"
+
+    Install Python Versions:
+    You can install Python versions using pyenv. For example, to install 
+    Python 3.11.6, you can use the following command:
+        pyenv install 3.11.6
+
+To create and manage virtual environments, Python developers often use tools like virtualenv or venv 
+(which is included in Python 3). Additionally, third-party tools like pyenv-virtualenv can be used in 
+combination with pyenv to manage virtual environments and Python versions effectively.
+
+Here are some terminal command and output examples:
+        python3 -m venv myenv_3.11.6_py (venv came with python 3.3 or later, prefered)
+        source myenv_3.11.6_py/bin/activate
+            or
+        pyenv virtualenv 3.11.6 myenv_3.11.6_py (need to install virtualenv first if not exist)
+
+    (to activate you pyenv environment: myenv_3.11.6.py)
+        pyenv activate myenv_3.11.6_py 
+            or 
+     run the following source command directly in myenv_3.11.6 directory:
+    (base) bash-5.1$ source ~/.pyenv/versions/myenv_3.11.6_py/bin/activate
+    (myenv_3.11.6_py) (base) bash-5.1$ 
+
+
+Now your pyenv special environment is established, you can intall other needed python libs with
+pip or pi3 (prefered if python3 is used like python 3.11.6)
+
+    (myenv_3.11.6_py) (base) bash-5.1$ pip install --upgrade pip
+    Requirement already satisfied: 
+        pip in /Users/zhou/.pyenv/versions/3.11.6/envs/myenv_3.11.6_py/lib/python3.11/site-packages (23.2.1)
+    Collecting pip
+        Obtaining dependency information for pip from 
+        https://files.pythonhosted.org/packages/15/aa/3f4c7bcee20/pip-23.3.2-py3-none-any.whl.metadata
+    Using cached pip-23.3.2-py3-none-any.whl.metadata (3.5 kB)
+    Using cached pip-23.3.2-py3-none-any.whl (2.1 MB)
+    Installing collected packages: pip
+    Attempting uninstall: pip
+        Found existing installation: pip 23.2.1
+        Uninstalling pip-23.2.1:
+        Successfully uninstalled pip-23.2.1
+        Successfully installed pip-23.3.2
+(myenv_3.11.6_py) (base) bash-5.1$ 
+
+    if you downloaded  XNAT_pipeline_1.0 zip file from Github at:
+        https://github.com/zhouemily/XNAT_pipeline_1.0
+
+    you can unzip the files  and cd to the directory of your choices:
+    for exmaple:
+    (myenv_3.11.6_py) (base) bash-5.1$ cd ~/xnat/xnat1.0
+    (myenv_3.11.6_py) (base) bash-5.1$ pwd
+        /Users/zhou/xnat/xnat1.0
+    (myenv_3.11.6_py) (base) bash-5.1$ 
+    (myenv_3.11.6_py) (base) bash-5.1$ ls *py; ls *sh
+         XNAT_file_pipeline.py	run.py			test_dcm.py		xnat_send.py
+         run.sh			run_test.sh		run_xnat_pipeline.sh	weasis.sh
+    (myenv_3.11.6_py) (base) bash-5.1$ 
+
+    (See more detailed information on readme_run.py on how to run scripts)
+
+For single file processing:
+(myenv_3.11.6_py) (base) bash-5.1$ ./XNAT_file_pipeline.py -h
+Program Started
+DEBUG [main:434]: This is a debug message from debug_print function
+2024-01-16 15:0016 cups id is needed:
+
+example: ./Xnat_file_pipeline.py -id CUPS003 [-d path_to_files: use default path if not provided]
+
+            Usage: ./XNAT_file_pipeline.py -id cups_id [-h] [-D] [-v] [-fpng png_fname] [-fsvg1 svg_fname1] [-fsvg2 svg_fname2]
+            -h			print help menu
+            -id [cups_id]       input cups_id
+            -D                  run debug mode
+            -v                  enable verbose
+            -d                  input root path directory
+            
+(myenv_3.11.6_py) (base) bash-5.1$ 
+
+For many file in specified direcory (-d default_path):
+(myenv_3.11.6_py) (base) bash-5.1$ ./run.py -i CUPS.log
+need input file: usage: ./run.py -i CUPS.log
+Directory './dcm_dir' already exists.
+2024-01-16 15:0258 excute command::OK: ./XNAT_file_pipeline.py -L -id CUPS003
+......
+
+
+Test all new dcm files created at ./dcm_dir:
+./test_dcm.sh
+
+or 
+use Weasis to analyze the new dcm files.
+
+After you are sure those dcm file are well tested, you can upload those dcm files automatically to
+the XNAT server: xnat_send.py
+
+prerequirment:
+	use xnatpy and netrc modules
+	creat ~/.netrc to store "machine", user, and passwd for security purpose
+	use encrytion (Not plain passwd) to be safer if needed
+	for example: vi ~/.netrc, you will see:
+#############################################################
+#machine    xnat1.beckman.illinois.edu
+#login      "loginname"
+#password   "xxxxxxxxx"
+##############################################################
+
+IMPORTANT:
+after create the ~/.netrc file, you need set the correct permission:
+chmod 600 ~/.netrc
+This command sets the permissions of the ~/.netrc file to allow 
+read and write access only to the owner (you) and restricts access to everyone else.
+################################################################
+
+Finaly if you want to deactivate your pyenv, simply type at the prompt:
+...
+(myenv_3.11.6_py) (base) bash-5.1$pwd 
+/Users/zhou/xnat/xnat1.0
+(myenv_3.11.6_py) (base) bash-5.1$ ls
+XNAT_pipeline_1.0-main
+(myenv_3.11.6_py) (base) bash-5.1$ deactivate
+(base) bash-5.1$ 
+deactivate
+
+                          Documentation for All Scripts: 
+
+1.XNAT_file_pipeline.py (run_xnat_pipeline.sh)	
+2.run.py (run.sh)			
+3.xnat_send.py
+4.run_test.sh (test_dcm.py)		
+===========================================================================================
+                  README for XNAT Script Installation and Execution
+
+This README provides guidance for installing and executing the following scripts and tools:
+    XNAT_file_pipeline.py and xnat_send.py:  scripts used with the XNAT platform. 
+
+Below you will find details on system requirements, installation procedures, and execution steps.
+
+System Requirements
+Python Version: Python 3.11.6
+Pip Version: pip 23.3.1
+Ensure that your system has the correct versions of Python and Pip installed. 
+The script has been tested and confirmed on these versions.
+
+Installation Steps
+Check Python and Pip Versions:
+Verify that you are using the correct versions of Python and Pip. You can do this using the following commands:
+
+python -V  # Should output Python 3.11.6
+pip3 -V    # Should output pip 23.3.1
+Environment Setup:
+
+It's recommended to use a virtual environment for Python projects to manage dependencies effectively.
+If you haven't set up a virtual environment, you can do so by running:
+
+python -m venv myenv
+source myenv/bin/activate
+Replace myenv with your desired environment name.
+Clone Repository (if applicable):
+
+1. XNAT_file_pipeline.py
+========================================
+This Python script, XNAT_file_pipeline.py, is a program for processing and generating DICOM images and metadata 
+from PNG and SVG files. Below is a user guide/documentation for the script:
+
+Usage:
+    ./XNAT_file_pipeline.py -id cups_id [-h] [-D] [-v] [-fpng png_fname] [-fsvg1 svg_fname1] [-fsvg2 svg_fname2]
+	-id [cups_id]: Mandatory argument to specify the CUPS ID for processing.
+
+    Optional Arguments:
+	-h: Display help menu.
+	-D: Enable debug mode for verbose debugging messages.
+	-v: Enable verbose mode for additional output.
+	-fpng png_fname: Specify the path to the PNG file. Default path is determined based on the CUPS ID.
+	-fsvg1 svg_fname1: Specify the path to the first SVG file. Default path is determined based on the CUPS ID.
+	-fsvg2 svg_fname2: Specify the path to the second SVG file. Default path is determined based on the CUPS ID.
+	-d: Specify the root path directory. Default root path is either the local directory or a system directory, 
+            depending on the local flag.
+
+Overview:
+The script performs the following tasks:
+
+    1.Loads PNG and resized SVG images.
+    2.Resizes and converts the SVGs to PNG format.
+    3.Stacks the PNG and SVG images.
+    4.Adds metadata and text to the stacked image.
+    5.Saves the stacked image as a PNG file.
+    6.Converts the PNG to JPG and then to DICOM format.
+    7.Modifies the DICOM metadata.
+    8.Generates the final DICOM file.
+
+Script Flow:
+    The script loads PNG and SVG images.
+    It resizes and converts the SVG images to PNG format.
+    Stacks the PNG and SVG images together to create a single image.
+    Adds text and metadata to the stacked image, including patient information and quality metrics.
+    Saves the stacked image as a PNG file with the CUPS ID as the filename.
+    Converts the PNG to JPG and then to DICOM format.
+    Modifies the DICOM metadata with additional patient information.
+    Generates the final DICOM file with the updated metadata.
+
+Important Functions and Classes:
+    Pipeline: Class for processing SVG to PNG conversion, file existence checks, and DICOM format conversion.
+    Util: Class for processing command-line arguments, running commands, and managing file paths.
+
+Running the Script:
+    Ensure you have Python 3.x installed on your system.
+    Make the script executable: chmod +x XNAT_file_pipeline.py
+    Run the script with the appropriate arguments. At a minimum, provide the -id flag followed by the CUPS ID.
+
+Example Usage:
+    ./XNAT_file_pipeline.py -id CUPS003 [-d path: use default if not provided]
+
+Output:
+    The script will generate a stacked PNG image, convert it to DICOM format, and save it with the CUPS ID as the filename. 
+    The final DICOM file will contain the additional metadata and patient information.
+
+Note:
+Ensure that the required dependencies, such as pydicom and PIL, are installed before running the script.
+Make sure the paths to the SVG, PNG, and CSV files are correctly provided as arguments or specified in the script.
+Debug mode (-D) provides additional debugging information for troubleshooting.
+
+IMPORTANT:
+The script may also be configured for local file paths by setting the -L flag.
+The script relies on external tools like img2dcm and dcmodify for DICOM conversion and modification. 
+Make sure these tools are accessible from the specified paths.
+Please adjust the file paths and parameters according to your specific use case and file locations.
+
+2. run.py (python wrapper script to run XNAT_file_pipeline.py) 
+==============================================================================
+Description Document for run.py
+
+Overview
+
+This script is designed to automate the processing of DICOM files and their subsequent handling, 
+including directory management, file zipping, and preparation for transfer to an XNAT server.
+
+Features
+    1. Flexible Input Handling: The script accepts various command-line arguments, including input file, output directory, 
+       and additional directory path. This allows for dynamic use based on user-specified paths and files.
+    2. Verbose and Debug Modes: Users can specify the level of verbosity for output messages or enable a debug mode for 
+       more detailed diagnostic information.
+    3. Automatic Directory Management: It can ensure the existence of specified directories, create them if they don't exist, 
+       and handle errors during creation.
+    4. DICOM File Handling: The script includes functionality to remove backup DICOM files (.dcm.bak) and to zip an entire directory 
+       of DICOM files for easier transfer and storage.
+    5. XNAT Integration: While detailed XNAT integration steps are not fully implemented in the script, it lays the groundwork for 
+       processing and preparing files for upload to an XNAT server.
+
+Usage
+	Command-Line Arguments
+	-i, --input: Specify the input file (required).
+	-o, --outdir: Define the output directory path.
+	-d, --directory: Set an additional directory path.
+	-v, --verbose: Increase verbosity for more detailed output messages.
+	-D, --debug: Enable debug mode for additional diagnostic information.
+
+Example Usage
+	./run.py -i CUPS.log -o /path/to/output -d /path/to/directory -v -D
+
+Note:
+    CUPS.log is created with "du -k" to list files in CUPS direcotry like the following:
+    %cd ~/CUPS
+    %du -k &> CUPS.log
+
+    Specific notes on functionality:
+    1.Argument Parsing: The script uses argparse to manage command-line arguments, making it user-friendly and 
+      adaptable to various use cases.
+    2.Directory and File Operations: Functions like ensure_dir, rm_bak_files, and zip_directory manage directory creation, 
+      clean up backup files, and zip directories, respectively.
+    3.Custom Output Management: The Util class provides custom methods for running commands, 
+      timestamped printing (tprint), and debugging information (debug_print).
+    4.Extracting IDs: The get_id_in_file function extracts specific IDs from a given file, useful for processing specific 
+      subsets of data.
+    5.Running External Commands: The myRun class encapsulates the logic to execute external commands 
+      (related to XNAT file pipeline processing) for each ID in the provided list.
+
+The script is designed with a focus on security and efficiency, avoiding hardcoding sensitive information and handling potential 
+errors gracefully. Users should ensure that the necessary Python environment and dependencies are set up before running the 
+script. The script is intended for users with a basic understanding of Python and command-line operations, especially in 
+the context of medical imaging data management.
+
+3. xnat_send.py:
+==================================================================================================================
+This script is designed to interact with an XNAT server for managing and processing neuroimaging and related data. 
+XNAT is a software platform designed to facilitate common management and productivity tasks for imaging and associated data.
+
+Key Features:
+=============
+1.Secure Credential Management:
+
+The script uses the netrc module to securely manage credentials. It retrieves login information from a .netrc file, 
+avoiding hard-coded credentials in the script for enhanced security. The script suggests using encrypted passwords 
+rather than plain text for additional security.
+
+2.XNAT Server Connection:
+
+Establishes a connection to an XNAT server specified by host.
+It uses credentials (username and password) obtained from the .netrc file.
+Project and Subject Information Retrieval:
+
+Once connected, the script iterates through the projects on the XNAT server, printing their IDs.
+It also retrieves and prints the IDs of subjects from the server.
+Specific Project Interaction:
+
+The script focuses on a specific project (with the ID 'CUPS'), attempting to retrieve and interact with it.
+File Uploading:
+The script includes commented-out code lines for importing a zip file (CUPS.DCM.zip) into the XNAT server.
+It demonstrates how to upload the file to the prearchive of the 'CUPS' project, providing a safer way to import data.
+Session Management:
+Ensures proper management of the XNAT session by disconnecting after the operations are completed.
+Usage:
+Before running the script, users should create a .netrc file with the necessary XNAT server credentials. 
+The script is then executed to perform operations like listing project IDs, subject IDs, and managing data import 
+to the XNAT server.
+
+Note:
+1. The script contains helpful comments and indications of where users can modify it to suit specific needs, 
+   such as changing the host address, selecting different projects, or managing file uploads. It's tailored 
+   for secure and efficient interaction with XNAT servers, emphasizing security in credential management 
+   and flexibility in handling different server operations.
+2. xnat_send.py use xnatpy and netrc (build-in, no need to install for python 3.3 or later )modules
+   creat ~/.netrc to store "machine", user, and passwd for security purpose
+   use encrytion (Not plain passwd) to be safer if needed
+   for example: vi ~/.netrc, you will see:
+#############################################################
+machine    xnat1.beckman.illinois.edu
+login      "loginname"
+password   "xxxxxxxxx"
+##############################################################
+IMPORTANT:
+after create the ~/.netrc file, you need set the correct permission:
+chmod 600 ~/.netrc
+This command sets the permissions of the ~/.netrc file to allow 
+read and write access only to the owner (you) and restricts access to everyone else.
+
+4. test_dcm.py
+==================================
+Overview
+The test_dcm.py script is designed to read and examine the content of a DICOM (Digital Imaging and Communications in Medicine) 
+file. DICOM is a standard format used for storing and transmitting medical imaging data. This script allows users to inspect 
+the attributes and metadata contained within a DICOM file.
+
+Usage
+To use the test_dcm.py script, follow these steps:
+
+Open a terminal or command prompt.
+
+Run the script with the following command:
+
+	python test_dcm.py <path_to_dicom_file>
+
+Replace <path_to_dicom_file> with the file path to the DICOM file you want to examine.
+
+Script Functionality
+The test_dcm.py script performs the following tasks:
+Command-Line Argument Check: It checks whether a command-line argument (the path to the DICOM file) is provided. 
+If not, it displays usage instructions and exits.
+
+DICOM File Reading: It reads the specified DICOM file using the Pydicom library. The script uses the pydicom.dcmread 
+function to read the file.
+
+Print DICOM Dataset: It prints the entire DICOM dataset, which includes all the attributes and metadata in the DICOM file.
+
+Access Specific DICOM Attributes: It accesses specific DICOM attributes within the dataset, including the "Patient Comments," 
+"Patient's Name," and "Study Date."
+
+Patient Comments Handling: If the "Patient Comments" attribute is found in the DICOM file and contains data, 
+the script concatenates the individual elements into a single string and displays it. If the "Patient Comments" 
+attribute is not found or is empty, the script notifies the user.
+
+Display Specific Attributes: It displays the "Patient's Name" and "Study Date" attributes extracted from the DICOM file.
+
+Example Usage
+Here's an example of how to use the test_dcm.py script:
+	python test_dcm.py /path/to/your/dicom/file.dcm
+
+Replace /path/to/your/dicom/file.dcm with the actual file path to the DICOM file you want to examine.
+
+Output
+When you run the test_dcm.py script, it will provide the following information:
+
+The entire DICOM dataset, including all attributes and metadata in the DICOM file.
+If available, the concatenated "Patient Comments" attribute.
+The "Patient's Name" attribute.
+The "Study Date" attribute.
+Error Handling
+If any errors occur during the execution of the script, it will display an error message indicating the issue. Possible errors could include problems with reading the DICOM file or accessing specific attributes.
+
+Important Notes
+Ensure that you have Python and the Pydicom library installed on your system.
+Provide the correct file path to the DICOM file you want to examine as a command-line argument.
+The script is designed for inspecting DICOM files and displaying their attributes. It does not modify or edit the files in any way.
+If you encounter any issues or errors when using the script, refer to the error message for troubleshooting.
+Always handle medical imaging data and DICOM files with care and in compliance with relevant privacy and security regulations.
+
+
+    Wrapper Shell Scripts
+==========================================================================
+
+1. run.sh
+=============
+#!/bin/bash
+
+set -x
+##########################################################################
+#/usr/local/bin/python run.py -i CUPS.log -d path -v
+#/usr/local/bin/python run.py -i /Users/zhou/xnat/testdir/CUPS.log -d /Volumes/CUPS/PipelineOutputs/bids/derivatives/ -v
+#/System/Volumes/Data/Volumes/CUPS is the mounting directory
+#du -k &> CUPS.log (this log is useful to extract the CUPS id which is used extensively for the processing script
+#root_path can use /Volumes/CUPS/PipelineOutputs/bids/derivatives/
+#or /System/Volumes/Data/Volumes/CUPS/PipelineOutputs/bids/derivatives/
+#The above code create CUPS.DCM.zip in the current directory for upload
+
+###########################################################################
+#After run run.sh, the CUPS.DCM.zip file will be loaded to xnat server 
+#using the following python script: xnat_send.py
+###########################################################################
+
+./run.py -i ./CUPS.log -d /Volumes/CUPS/PipelineOutputs/bids/derivatives/ -v
+
+2. run_xnat_pipeline.sh (similar function to run.py)
+======================================================
+This is a Bash script that appears to automate the execution of a Python script named XNAT_file_pipeline.py 
+with different arguments taken from an array of strings. Below is an explanation of each section of the script:
+
+Script Description:
+file_path variable is set to the path /Volumes/CUPS/PipelineOutputs/bids/derivatives/.
+
+A check is performed to ensure that the script is called with no command-line arguments. If there are any arguments provided, 
+it will display a usage message and exit with an error code.
+
+An array of strings named strings is defined using CUPS_ids. This array contains the arguments that will be passed to the 
+XNAT_file_pipeline.py script.
+
+A for loop iterates through the strings array. During each iteration, it runs the XNAT_file_pipeline.py Python script with the -id argument set to the current string in the strings array and the -d argument set to the value of file_path. The script displays a message indicating the current argument being processed.
+
+./run_xnat_pipeline.sh
+This will run the XNAT_file_pipeline.py Python script with each argument from the strings array, 
+passing the file_path as the -d argument.
+
+Ensure that the XNAT_file_pipeline.py script is located in the same directory as this Bash script 
+or is accessible from your system's PATH.
+
+Please note that if you have a different version of XNAT_file_pipeline.py, you may need to modify 
+the script to match the actual command-line arguments expected by that script.
+
+######################################################### 
+#!/bin/bash
+
+file_path=/Volumes/CUPS/PipelineOutputs/bids/derivatives/
+
+# Check for the correct number of arguments
+if [ "$#" -ne 0 ]; then
+    echo "Usage: $0"
+    exit 1
+fi
+
+# Define an array of strings
+strings=("CUPS003" "CUPS004" "CUPS005" "CUPS008" "CUPS009")
+#strings=('CUPS003' 'CUPS005' 'CUPS006' 'CUPS008' 'CUPS009' 'CUPS010' 'CUPS012' 'CUPS013' 'CUPS015' 'CUPS016' 'CUPS017' 'CUPS018' 'CUPS019' 'CUPS022' 'CUPS023' 'CUPS027' 'CUPS029' 'CUPS030' 'CUPS035' 'CUPS037' 'CUPS039' 'CUPS040' 'CUPS041' 'CUPS042' 'CUPS044' 'CUPS047' 'CUPS048' 'CUPS051' 'CUPS053' 'CUPS054' 'CUPS055' 'CUPS056' 'CUPS057' 'CUPS058' 'CUPS059' 'CUPS060' 'CUPS061' 'CUPS062' 'CUPS064' 'CUPS065' 'CUPS066')
+
+# Loop through the array and run the Python script with each string
+for string_arg in "${strings[@]}"; do
+    echo "Running with argument: $string_arg"
+    python XNAT_file_pipeline.py -id "$string_arg" -d $file_path
+done
+=================================================================
+
+3.run_test.sh
+-------------------------------------
+Overview
+run_test.sh is a bash script designed to automate the testing and examination of DICOM (.dcm) files located 
+in a specific directory (./dcm_dir). The script uses the test_dcm.py Python script to process each DICOM file individually.
+
+Requirements
+Bash Shell: The script is written for the Bash shell and should be run in an environment where Bash is available.
+Python Environment: Ensure that Python is installed, as test_dcm.py is a Python script.
+DICOM Files: The script is designed to work with files having the .dcm extension, typically associated with 
+medical imaging (DICOM format).
+test_dcm.py: This Python script must be present in the same directory as run_test.sh and should have executable permissions.
+
+Script Location
+The script should be placed in a directory that contains the test_dcm.py script. The DICOM files to be tested should be 
+in the ./dcm_dir subdirectory relative to where the script is located.
+
+Usage
+To run the script, use the following command in the terminal:
+	./run_test.sh
+Ensure that the script has executable permissions. If not, run chmod +x run_test.sh to make it executable.
+
+Script Breakdown
+	set -x
+This command turns on the debugging mode in the script, which prints each command and its arguments as they are executed.
+
+Print Current Working Directory:
+	pwd
+This prints the directory from which the script is being run.
+
+List DICOM Files:
+	ls ./dcm_dir
+Lists all the contents of the ./dcm_dir directory.
+
+Process Each DICOM File:
+	for dcm in `ls ./dcm_dir/*.dcm`
+	do
+    		./test_dcm.py $dcm
+	done
+This loop iterates over each .dcm file in ./dcm_dir. For each file, it calls test_dcm.py with the DICOM file as an argument.
+
+Notes
+It's important to ensure that test_dcm.py is compatible with the version of Python installed on your system.
+The script does not handle subdirectories in ./dcm_dir. Only .dcm files directly under ./dcm_dir are processed.
+Error handling is not explicitly implemented in this script. If test_dcm.py encounters an error with a particular file, 
+the script will continue to the next file.
+
+Conclusion
+run_test.sh is a simple yet effective tool for batch processing and examining DICOM files using a Python script. 
+It automates the task of individually testing each file, making it useful for environments where large numbers 
+of DICOM files need to be processed.

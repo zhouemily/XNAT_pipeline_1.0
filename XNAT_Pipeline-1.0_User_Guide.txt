@@ -1,0 +1,77 @@
+XNAT Pipeline 1.0 User Guide
+
+Overview
+The XNAT Pipeline 1.0 provides a set of tools and scripts for automating data processing and analysis of 
+neuroimaging data on XNAT servers. It simplifies the execution of data pipelines and integrates seamlessly with XNAT, 
+making it an essential toolkit for researchers in neuroimaging.
+
+Features
+Automated workflows for data processing and analysis.
+Execution of specific pipelines for various processing needs.
+Seamless XNAT server integration.
+Customizable configurations for input, output, and processing settings.
+Tailored for neuroimaging data researchers.
+
+Prerequisites
+Python 3.x
+Required Python packages (listed in script files)
+XNAT account with appropriate permissions
+Installation and Setup
+
+Clone the repository:
+	git clone https://github.com/zhouemily/XNAT_pipeline_1.0.git
+	pip install -r requirements.txt  # Install required Python modules
+
+Python Environment Setup:
+Use pyenv for managing Python versions.
+Add pyenv to your shell configuration (.bashrc, .zshrc, etc.).
+Install the desired Python version using pyenv, e.g., pyenv install 3.11.6.
+Use venv or pyenv-virtualenv for creating virtual environments.
+
+Activate Python Environment:
+	python3 -m venv myenv_3.11.6_py
+	source myenv_3.11.6_py/bin/activate
+# or with pyenv
+	pyenv activate myenv_3.11.6_py
+
+Upgrade pip and install required libraries:
+	pip install --upgrade pip
+
+if you download and unzip the XNAT_pipeline_1.0 package from GitHub, then navigate to the desired directory.
+
+Usage
+For single file processing:
+
+./XNAT_file_pipeline.py -id CUPS003 [-d file_path (use default if not specified)]
+For processing multiple files in a specified directory:
+
+./run.py -i CUPS.log
+
+To test DICOM files in ./dcm_dir directory:
+./test_dcm.sh
+
+Upload tested DICOM files to XNAT server using xnat_send.py.
+Create a .netrc file for secure XNAT server credential storage and set correct permissions with chmod 600 ~/.netrc.
+
+To deactivate the Python environment:
+deactivate
+
+Important Scripts and Their Functions
+XNAT_file_pipeline.py: Processes and generates DICOM images and metadata from PNG and SVG files.
+
+run.py: Automates processing of DICOM files, manages directories, and prepares files for XNAT server upload.
+
+xnat_send.py: Handles secure uploading of files to XNAT server using encrypted credentials stored in .netrc.
+
+test_dcm.py: Reads and examines DICOM files, providing insights into their attributes and metadata.
+
+Wrapper Shell Scripts
+run.sh: Automates the execution of run.py with specified arguments.
+
+run_xnat_pipeline.sh: Executes XNAT_file_pipeline.py with various arguments for batch processing.
+
+run_test.sh: Facilitates batch testing of DICOM files using test_dcm.py.
+
+Conclusion
+XNAT Pipeline 1.0 is a comprehensive toolkit for managing and processing neuroimaging data on XNAT servers. 
+It streamlines workflows and offers flexible, efficient solutions for data analysis and integration with XNAT platforms.
